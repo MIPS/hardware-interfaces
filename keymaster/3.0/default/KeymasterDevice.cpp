@@ -162,8 +162,6 @@ static int keymaster_device_initialize(keymaster2_device_t** dev, uint32_t* vers
                                        bool* supports_ec, bool* supports_all_digests) {
     const hw_module_t* mod;
 
-    *supports_ec = true;
-
     int rc = hw_get_module_by_class(KEYSTORE_HARDWARE_MODULE_ID, NULL, &mod);
     if (rc) {
         ALOGI("Could not find any keystore module, using software-only implementation.");
@@ -172,6 +170,8 @@ static int keymaster_device_initialize(keymaster2_device_t** dev, uint32_t* vers
         *version = -1;
         return 0;
     }
+
+    *supports_ec = true;
 
     if (mod->module_api_version < KEYMASTER_MODULE_API_VERSION_1_0) {
         *version = 0;
